@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-
+import { LibraryModule } from '../library.module';
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    LibraryModule
   ],
-  declarations:[SearchBarComponent],
-  exports: [SearchBarComponent]
+  declarations: [],
+  exports: []
 })
-export class ComponentModule { }
+export class ComponentsModule { }

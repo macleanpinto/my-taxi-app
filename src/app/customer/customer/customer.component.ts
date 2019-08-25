@@ -15,4 +15,7 @@ export class CustomerComponent implements OnInit {
   pickLocation() {
     this.router.navigate(['/search']);
   }
+  segmentChanged($event) {
+    console.log($event);
+  }
 }
