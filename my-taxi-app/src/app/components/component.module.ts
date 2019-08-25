@@ -10,6 +10,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     CommonModule,
     FormsModule
   ],
-  declarations: [SearchBarComponent]
+  declarations:[SearchBarComponent],
+  exports: [SearchBarComponent]
 })
-export class Tab2PageModule { }
+export class ComponentModule { }
