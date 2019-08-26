@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent implements OnInit {
-
   constructor(private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    console.log(history.state.data);
+  }
 
-  pickLocation() {
-    this.router.navigate(['/search']);
+  pickLocation(direction: string) {
+    this.router.navigate(['/search'], {state: {data: {field: direction}}});
   }
   segmentChanged($event) {
     console.log($event);
