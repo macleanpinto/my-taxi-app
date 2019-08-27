@@ -1,11 +1,11 @@
 <ion-card>
   <ion-item>
     <ion-icon name="pin" slot="start"></ion-icon>
-    <ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
+    <ion-input [(ngModel)]="pickUpInput" (click)="pickLocation('source')"></ion-input>
   </ion-item>
   <ion-item>
     <ion-icon name="pin" slot="start"></ion-icon>
-    <ion-label (click)="pickLocation('to')">Where To? </ion-label>
+    <ion-input [(ngModel)]="destionationInput" (click)="pickLocation('destination')"></ion-input>
   </ion-item>
   <ion-card-content>
     <ion-toolbar>

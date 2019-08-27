@@ -3,11 +3,10 @@
     <ion-title>Searchbar</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <!-- <ion-searchbar #searchbar debounce="500" placeholder="Search for Location" animated="true"  class="form-control" [formControl]="searchControl"></ion-searchbar> -->
-    <input #searchbar placeholder="Search for Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="search" class="form-control" #search [formControl]="searchControl">
-    <!-- <input type="search" id="searchbar" #searchbar placeholder="Search"> -->
+    <ion-searchbar #searchbar showCancelButton="focus" animated="true" placeholder="Search for Location"
+      cancelButtonText="Cancel" class="form-control" [formControl]="searchControl"> </ion-searchbar>
   </ion-toolbar>
 </ion-header>
-<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+<!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
   <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-</agm-map>
+</agm-map> -->

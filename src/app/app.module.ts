@@ -9,6 +9,7 @@ import { LibraryModule } from './library.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       BrowserAnimationsModule,
       AppRoutingModule,
       LibraryModule.forRoot(),
+      IonicStorageModule.forRoot()
     ],
   providers: [
     StatusBar,
