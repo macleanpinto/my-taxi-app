@@ -1,8 +1,6 @@
-/// <reference types="@types/googlemaps" />
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
-import { IonSearchbar } from '@ionic/angular';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({

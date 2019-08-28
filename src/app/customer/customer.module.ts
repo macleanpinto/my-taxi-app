@@ -1,13 +1,15 @@
+import { AgmCoreModule } from '@agm/core';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SearchBarComponent } from './search-bar/search-bar.component';
 import { LibraryModule } from '../library.module';
+import { PricingService } from '../providers/pricing.service';
 import { CustomerComponent } from './customer/customer.component';
-import { AgmCoreModule } from '@agm/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   imports: [
+    CommonModule,
     LibraryModule,
     RouterModule.forChild([
       { path: '', component: CustomerComponent },
@@ -16,10 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AgmCoreModule.forRoot({
       apiKey: '',
       libraries: ['places']
-    }),
-    FormsModule,
-    ReactiveFormsModule
+    })
   ],
-  declarations: [CustomerComponent, SearchBarComponent]
+  declarations: [CustomerComponent, SearchBarComponent],
+  providers:[PricingService]
 })
 export class CustomerModule { }

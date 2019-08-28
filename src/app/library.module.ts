@@ -1,14 +1,15 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatFormFieldModule } from '@angular/material';
 import { IonicModule } from '@ionic/angular';
-import { ModuleWithProviders } from '@angular/core';
 
 @NgModule({
     declarations: [],
     entryComponents: [],
     exports: [MatButtonModule, MatCardModule, IonicModule, MatFormFieldModule,
-        FormsModule],
+        FormsModule, HttpClientModule,FormsModule,
+        ReactiveFormsModule],
     bootstrap: []
 })
 export class LibraryModule {
