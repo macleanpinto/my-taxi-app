@@ -10,18 +10,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IonicStorageModule } from '@ionic/storage';
+import { MatIconModule } from '@angular/material';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports:
     [BrowserModule,
-      CommonModule,
-      IonicModule.forRoot(),
       BrowserAnimationsModule,
       AppRoutingModule,
       LibraryModule.forRoot(),
-      IonicStorageModule.forRoot()
+      IonicStorageModule.forRoot(),
+      IonicModule.forRoot(), MatIconModule
     ],
   providers: [
     StatusBar,

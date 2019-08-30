@@ -5,9 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { LibraryModule } from '../library.module';
 @NgModule({
   imports: [
-    IonicModule,
     CommonModule,
-    FormsModule,
     LibraryModule
   ],
   declarations: [],
