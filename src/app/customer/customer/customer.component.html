@@ -10,9 +10,9 @@
   <ion-card-content>
     <ion-toolbar>
       <ion-segment (ionChange)="segmentChanged($event)">
-        <ion-segment-button *ngFor="let rideEstimate of rideEstimateList" value="rideEstimate">
+        <ion-segment-button *ngFor="let rideEstimate of rideEstimateList" value="{{CarType[rideEstimate.carType]}}">
           <ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
-          <img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg" alt="hatchback">
+          <img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg" alt="{{CarType[rideEstimate.carType]}}" title="{{CarType[rideEstimate.carType] | uppercase}}">
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>

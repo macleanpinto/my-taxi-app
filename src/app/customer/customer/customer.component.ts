@@ -6,11 +6,10 @@ import { Subscription } from 'rxjs';
 import { CarType } from '../../enums';
 import { Storage } from '@ionic/storage';
 
-
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss'],
+  styleUrls: ['./customer.component.scss']
 })
 export class CustomerComponent implements OnInit, AfterViewInit {
 

@@ -1,6 +1,9 @@
-import { MapsAPILoader } from '@agm/core';
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+
+import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MapsAPILoader } from '@agm/core';
+import { IonSearchbar } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 
 @Component({

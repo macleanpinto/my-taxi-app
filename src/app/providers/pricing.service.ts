@@ -14,11 +14,11 @@ export class PricingService {
 
   public fetchRideEstimate(startLocation: Location, destination: Location): Observable<RideEstimate[]> {
     if (environment.production) {
-      let params: HttpParams = new HttpParams();
+      const params: HttpParams = new HttpParams();
       params.set('startLocation', JSON.stringify(startLocation));
       params.set('destination', JSON.stringify(destination));
       return this.httpClient.get(this.fetchRideEstimateServiceUrl, { params }).
-        pipe(map((res: RideEstimate[]) => { return res }),
+        pipe(map((res: RideEstimate[]) => res),
           catchError((err: HttpErrorResponse) => this.handleError));
     } else {
       return of(RIDEESTIMATE);
