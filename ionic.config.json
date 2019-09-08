@@ -1,5 +1,7 @@
 {
   "name": "my-taxi-app",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

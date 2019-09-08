@@ -1,3 +1,26 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="ride_later">
+      <mat-icon>departure_board</mat-icon>
+      <ion-label>Ride Later</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="ride_now">
+      <ion-icon name="car"></ion-icon>
+      <ion-label>Ride Now</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="map">
+      <ion-icon name="map"></ion-icon>
+      <ion-label>Map</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="about">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>About</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

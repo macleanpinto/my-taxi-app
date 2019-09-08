@@ -1,8 +1,9 @@
-/// <reference types="@types/googlemaps" />
+
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import { IonSearchbar } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,11 +13,11 @@ import { Router } from '@angular/router';
 })
 export class SearchBarComponent implements OnInit {
 
-  // @ViewChild('searchbar', { static: false, read: ElementRef }) private searchElementRef: IonSearchbar;
-  @ViewChild('searchbar', { static: false }) public searchElementRef: ElementRef;
+  @ViewChild('searchbar', { static: false, read: ElementRef }) searchbar: ElementRef;
+  // @ViewChild('searchbar', { static: false }) public searchElementRef: ElementRef;
   map: google.maps.Map;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private router: Router) { }
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private router: Router, private storage: Storage) { }
 
   public latitude: number;
   public longitude: number;
@@ -24,8 +25,6 @@ export class SearchBarComponent implements OnInit {
   public zoom: number;
 
   ngOnInit() {
-    const fieldValue = history.state.data;
-    console.log('ff', fieldValue.field)
     // set google maps defaults
     this.zoom = 4;
     this.latitude = 39.8282;
@@ -36,19 +35,14 @@ export class SearchBarComponent implements OnInit {
 
     // set current position
     this.setCurrentPosition();
+  }
 
+  ionViewWillEnter() {
+    const fieldValue = history.state.data;
+    var searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      // let autocomplete;
-      // this.searchElementRef.getInputElement().then((input: HTMLInputElement) => {
-      //   console.log('Input', input)
-      //   autocomplete = new google.maps.places.Autocomplete(input, {
-      //     types: ['address']
-      //   });
-      // });
-      // const searchInput = this.searchElementRef.nativeElement.querySelector('.searchbar-input');
-      console.log('Search input', this.searchElementRef.nativeElement);
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+      const autocomplete = new google.maps.places.Autocomplete(searchInput, {
         types: ['address']
       });
       let place: google.maps.places.PlaceResult;
@@ -64,9 +58,12 @@ export class SearchBarComponent implements OnInit {
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 12;
+          this.storage.set(fieldValue.field + '', JSON.parse(JSON.stringify(place))).then(success => console.log('Place', success));
+          this.router.navigate(['/']);
         });
       });
     });
+
   }
 
   private setCurrentPosition() {

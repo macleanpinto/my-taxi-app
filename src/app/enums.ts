@@ -1,0 +1,1 @@
+export  enum CarType { hatchback, sedan, suv, luxury }
