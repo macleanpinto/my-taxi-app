@@ -5,7 +5,13 @@
 #action {
   margin-top: 16px;
 }
-#action > .mat-raised-button:last-child {
+#action > .ion-button
+{
+width: 30%;
+height: 60px;
+margin-top: 13px;
+}
+#action > .ion-button:last-child {
   margin-left: 16px;
 }
 
@@ -16,4 +22,33 @@ ion-label {
 
 img {
   width: 50px;
+}
+
+.mat-button-toggle-group
+{
+    width:100%;
+}
+
+.mat-button-toggle{
+    width:50%;
+}
+
+.height-80{
+height:80px;
+}
+
+::ng-deep .input-wrapper
+{
+    height:80px;
+}
+.mar-left-57
+{
+
+margin-left:57px;
+}
+.width-50-perc
+{
+    width:49%;
+    display:inline-block;
+    margin-right: 20px;
 }

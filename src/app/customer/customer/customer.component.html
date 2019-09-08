@@ -1,18 +1,28 @@
 <ion-card>
-  <ion-item>
-    <ion-icon name="pin" slot="start"></ion-icon>
-    <ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-icon name="pin" slot="start"></ion-icon>
-    <ion-label (click)="pickLocation('to')">Where To? </ion-label>
-  </ion-item>
-  <ion-card-content>
-    <ion-toolbar>
-      <ion-segment (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="hatchback">
-          <ion-label>&#x20b9;386</ion-label>
-          <img src="../../../assets/icon/iconfinder_city-car_285808.svg" alt="hatchback">
+	<ion-card-content>
+		<ion-item>
+			<ion-icon name="pin" slot="start"></ion-icon>
+			<ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
+		</ion-item>
+		<ion-item>
+			<ion-icon name="pin" slot="start"></ion-icon>
+			<ion-label (click)="pickLocation('to')">Where To? </ion-label>
+		</ion-item>
+		<ion-item class="mar-left-57">
+			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
+				<ion-segment-button value="0">
+					<ion-label>Rent Now</ion-label>
+				</ion-segment-button>
+				<ion-segment-button value="1">
+					<ion-label>Rent Later</ion-label>
+				</ion-segment-button>
+			</ion-segment>
+		</ion-item>
+		<ion-item class="mar-left-57">
+			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
+				<ion-segment-button value="hatchback">
+					<ion-label>&#x20b9;386</ion-label>
+					<img src="../../../assets/icon/iconfinder_city-car_285808.svg" alt="hatchback">
         </ion-segment-button>
         <ion-segment-button value="sedan">
           <ion-label>&#x20b9;486</ion-label>
@@ -27,10 +37,11 @@
           <img src="../../../assets/icon/iconfinder_sportcar_285811.svg" alt="luxary">
         </ion-segment-button>
       </ion-segment>
-    </ion-toolbar>
+        </ion-item>
+
     <div class="align-center" id="action">
-      <button mat-raised-button>Confirm</button>
-      <button mat-raised-button>Cancel</button>
+        <ion-button expand="block" class="ion-button">Confirm</ion-button>
+        <ion-button expand="block" class="ion-button">Cancel</ion-button>
     </div>
   </ion-card-content>
 </ion-card>

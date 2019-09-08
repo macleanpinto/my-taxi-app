@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatFormFieldModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatButtonToggleModule } from '@angular/material';
 import { IonicModule } from '@ionic/angular';
 import { ModuleWithProviders } from '@angular/core';
 
 @NgModule({
     declarations: [],
     entryComponents: [],
-    exports: [MatButtonModule, MatCardModule, IonicModule, MatFormFieldModule,
-        FormsModule],
+    exports: [
+        IonicModule,
+        MatButtonToggleModule,
+        MatButtonModule,
+        FormsModule
+    ],
     bootstrap: []
 })
 export class LibraryModule {
