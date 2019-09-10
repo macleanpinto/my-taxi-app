@@ -1,54 +1,10 @@
-#price-content > .mat-fab {
-  margin-right: 5px;
-}
-
-#action {
-  margin-top: 16px;
-}
-#action > .ion-button
-{
-width: 30%;
-height: 60px;
-margin-top: 13px;
-}
-#action > .ion-button:last-child {
-  margin-left: 16px;
-}
-
 ion-label {
   font-size: 13px;
   margin: 0;
 }
 
 img {
-  width: 50px;
+  width: 44px;
 }
 
-.mat-button-toggle-group
-{
-    width:100%;
-}
 
-.mat-button-toggle{
-    width:50%;
-}
-
-.height-80{
-height:80px;
-}
-
-::ng-deep .input-wrapper
-{
-    height:80px;
-}
-.padding-left-80
-{
-
-margin-left:80px;
-}
-.width-50-perc
-{
-    width:49%;
-    display:inline-block;
-    margin-right: 20px;
-}

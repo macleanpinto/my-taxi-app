@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PricingService } from 'src/app/providers/pricing.service';
-import { RideEstimate, Location } from 'src/app/models';
-import { Subscription } from 'rxjs';
-import { CarType } from '../../enums';
 import { Storage } from '@ionic/storage';
+import { Subscription } from 'rxjs';
+import { Location, RideEstimate } from 'src/app/models';
+import { PricingService } from 'src/app/providers/pricing.service';
+import { CarType } from '../../enums';
 
 @Component({
   selector: 'app-customer',

@@ -1,45 +1,50 @@
-<ion-card>
-	<ion-card-content>
-		<ion-item>
-			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
-		</ion-item>
-		<ion-item>
-			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-label (click)="pickLocation('to')">Where To? </ion-label>
-		</ion-item>
-		<ion-item>
-			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
-				<ion-segment-button value="0">
-					<ion-label>Ride Now</ion-label>
-				</ion-segment-button>
-				<ion-segment-button value="1">
-					<ion-label>Ride Later</ion-label>
-				</ion-segment-button>
-			</ion-segment>
-		</ion-item>
-		<ion-item>
-			<ion-icon name="calendar" slot="start"></ion-icon>
-			<ion-label>Start Date</ion-label>
-			<ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
-		</ion-item>
-		<ion-item>
-			<ion-icon name="time" slot="start"></ion-icon>
-			<ion-label>Start Time</ion-label>
-			<ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
-		</ion-item>
-		<ion-item>
-			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
-				<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
-					<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
-					<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg" alt="{{rideEstimate.carType}}">
-				</ion-segment-button>
-      </ion-segment>
-        </ion-item>
+<ion-app>
+    <ion-header translucent>
+      <ion-toolbar>
+        <ion-title>DateTime</ion-title>
+      </ion-toolbar>
+    </ion-header>
+<ion-content fullscreen>
+<ion-item>
+	<ion-icon name="pin" slot="start"></ion-icon>
+	<ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
+</ion-item>
+<ion-item>
+	<ion-icon name="pin" slot="start"></ion-icon>
+	<ion-label (click)="pickLocation('to')">Where To? </ion-label>
+</ion-item>
+<ion-item>
+	<ion-segment (ionChange)="segmentChanged($event)">
+		<ion-segment-button value="0">
+			<ion-label>Ride Now</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="1">
+			<ion-label>Ride Later</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+</ion-item>
+<ion-item>
+	<ion-icon name="calendar" slot="start"></ion-icon>
+	<ion-label>Start Date</ion-label>
+	<ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
+</ion-item>
+<ion-item>
+	<ion-icon name="time" slot="start"></ion-icon>
+	<ion-label>Start Time</ion-label>
+	<ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
+</ion-item>
+<ion-item>
+	<ion-segment (ionChange)="segmentChanged($event)">
+		<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
+			<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
+			<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg" alt="{{rideEstimate.carType}}">
+		</ion-segment-button>
+	</ion-segment>
+</ion-item>
 
-    <div class="align-center" id="action">
-        <ion-button expand="block" class="ion-button">Confirm</ion-button>
-        <ion-button expand="block" class="ion-button">Cancel</ion-button>
-    </div>
-  </ion-card-content>
-</ion-card>
+<ion-item id="action">
+	<ion-button expand="block" class="ion-button">Confirm</ion-button>
+	<ion-button expand="block" class="ion-button">Cancel</ion-button>
+</ion-item>
+</ion-content>
+</ion-app>
