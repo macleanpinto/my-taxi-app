@@ -11,41 +11,29 @@
 		<ion-item>
 			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
 				<ion-segment-button value="0">
-					<ion-label>Rent Now</ion-label>
+					<ion-label>Ride Now</ion-label>
 				</ion-segment-button>
 				<ion-segment-button value="1">
-					<ion-label>Rent Later</ion-label>
+					<ion-label>Ride Later</ion-label>
 				</ion-segment-button>
 			</ion-segment>
 		</ion-item>
 		<ion-item>
-            <ion-icon name="calendar"  slot="start"></ion-icon>
+			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
 			<ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
 		</ion-item>
 		<ion-item>
-            <ion-icon name="time" slot="start"></ion-icon>
+			<ion-icon name="time" slot="start"></ion-icon>
 			<ion-label>Start Time</ion-label>
 			<ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
 		</ion-item>
 		<ion-item>
 			<ion-segment (ionChange)="segmentChanged($event)" class="height-80">
-				<ion-segment-button value="hatchback">
-					<ion-label>&#x20b9;386</ion-label>
-					<img src="../../../assets/icon/iconfinder_city-car_285808.svg" alt="hatchback">
-        </ion-segment-button>
-        <ion-segment-button value="sedan">
-          <ion-label>&#x20b9;486</ion-label>
-          <img src="../../../assets/icon/iconfinder_sedan_285810.svg" alt="sedan">
-        </ion-segment-button>
-        <ion-segment-button value="suv">
-          <ion-label>&#x20b9;586</ion-label>
-          <img src="../../../assets/icon/iconfinder_SUV_285812.svg" alt="suv">
-        </ion-segment-button>
-        <ion-segment-button value="lux">
-          <ion-label>&#x20b9;686</ion-label>
-          <img src="../../../assets/icon/iconfinder_sportcar_285811.svg" alt="luxary">
-        </ion-segment-button>
+				<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
+					<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
+					<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg" alt="{{rideEstimate.carType}}">
+				</ion-segment-button>
       </ion-segment>
         </ion-item>
 
