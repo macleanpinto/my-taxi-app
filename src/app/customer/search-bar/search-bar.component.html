@@ -1,12 +1,2 @@
-<ion-header translucent>
-  <ion-toolbar>
-    <ion-title>Searchbar</ion-title>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar #searchbar showCancelButton="focus" animated="true" placeholder="Search for Location"
-      cancelButtonText="Cancel" class="form-control" [formControl]="searchControl"> </ion-searchbar>
-  </ion-toolbar>
-</ion-header>
-<!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-  <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-</agm-map> -->
+<ion-searchbar #searchbar showCancelButton="focus" animated="true" placeholder="Search for Location" cancelButtonText="Cancel"
+ class="form-control" [formControl]="searchControl"> </ion-searchbar>

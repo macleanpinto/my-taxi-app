@@ -1,40 +1,43 @@
 <ion-card>
-	<ion-card-content>
+	<ion-card-content [formGroup]="rideSearchForm">
 		<ion-item>
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-label (click)="pickLocation('from')">Pickup From?</ion-label>
+			<ion-input (click)="pickLocation('from')" formcontrolName="pickupLocation" value="Pickup From?"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-label (click)="pickLocation('to')">Where To? </ion-label>
+			<ion-input (click)="pickLocation('to')" formControlName="dropLocation" value="Where To?"></ion-input>
 		</ion-item>
-		<ion-item>
+		<ion-list>
+			<ion-radio-group formControlName="rideSchedule">
+				<ion-item>
+					<ion-label>Ride Now</ion-label>
+					<ion-radio slot="start" value="0" ></ion-radio>
+				</ion-item>
+				<ion-item>
+					<ion-label>Ride Later</ion-label>
+					<ion-radio slot="start" value="1"></ion-radio>
+				</ion-item>
+			</ion-radio-group>
+		</ion-list>
+		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
 			<ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
 		</ion-item>
-		<ion-item>
+		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="time" slot="start"></ion-icon>
 			<ion-label>Start Time</ion-label>
 			<ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
 		</ion-item>
 
-		<ion-item>
-			<ion-segment (ionChange)="segmentChanged($event)">
-				<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
-					<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
-					<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg"
+		<ion-segment (ionChange)="segmentChanged($event)">
+			<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
+				<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
+				<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg"
 						alt="{{rideEstimate.carType}}">
 				</ion-segment-button>
 			</ion-segment>
-		</ion-item>
-		<ion-item>
-			<ion-label>Ride Schedule</ion-label>
-			<ion-select placeholder="Select One">
-				<ion-select-option value="now">Now</ion-select-option>
-				<ion-select-option value="later">Later</ion-select-option>
-			</ion-select>
-		</ion-item>
 		<ion-item-divider></ion-item-divider>
 		<ion-button expand="block" class="ion-button">Confirm</ion-button>
 		<ion-button expand="block" class="ion-button">Cancel</ion-button>
