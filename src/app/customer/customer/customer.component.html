@@ -2,17 +2,17 @@
 	<ion-card-content [formGroup]="rideSearchForm">
 		<ion-item>
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('from')" formcontrolName="pickupLocation" value="Pickup From?"></ion-input>
+			<ion-input (click)="pickLocation('from')" formControlName="pickupLocation"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('to')" formControlName="dropLocation" value="Where To?"></ion-input>
+			<ion-input (click)="pickLocation('to')" formControlName="dropLocation"></ion-input>
 		</ion-item>
 		<ion-list>
 			<ion-radio-group formControlName="rideSchedule">
 				<ion-item>
 					<ion-label>Ride Now</ion-label>
-					<ion-radio slot="start" value="0" ></ion-radio>
+					<ion-radio slot="start" value="0"></ion-radio>
 				</ion-item>
 				<ion-item>
 					<ion-label>Ride Later</ion-label>
@@ -23,23 +23,30 @@
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
-			<ion-datetime value="1990-02-19" placeholder="Select Date"></ion-datetime>
+			<ion-datetime placeholder="Select Date" formControlName="rideDate"></ion-datetime>
 		</ion-item>
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="time" slot="start"></ion-icon>
 			<ion-label>Start Time</ion-label>
-			<ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
+			<ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="rideTime"></ion-datetime>
 		</ion-item>
 
-		<ion-segment (ionChange)="segmentChanged($event)">
-			<ion-segment-button *ngFor="let rideEstimate of rideEstimateList" [value]="rideEstimate">
-				<ion-label>&#x20b9;{{rideEstimate.fare}}</ion-label>
-				<img src="../../../assets/icon/{{CarType[rideEstimate.carType]}}.svg"
-						alt="{{rideEstimate.carType}}">
-				</ion-segment-button>
-			</ion-segment>
+		<ion-segment (ionChange)="segmentChanged($event)" formControlName="carType">
+			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType">
+				<ion-label>{{CarType[carType]}}</ion-label>
+				<img src="../../../assets/icon/{{CarType[carType]}}.svg" alt="{{CarType[carType]}}">
+			</ion-segment-button>
+		</ion-segment>
+
+		<ion-item>
+			<span class="fas fa-camera"></span>
+			<ion-label>Bid</ion-label>
+			<ion-input formControlName="bid"></ion-input>
+		</ion-item>
 		<ion-item-divider></ion-item-divider>
 		<ion-button expand="block" class="ion-button">Confirm</ion-button>
 		<ion-button expand="block" class="ion-button">Cancel</ion-button>
+
+		{{this.rideSearchForm.value | json}}
 	</ion-card-content>
 </ion-card>
