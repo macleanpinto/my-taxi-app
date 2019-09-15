@@ -12,7 +12,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
     templateUrl: './customer.component.html',
     styleUrls: ['./customer.component.css']
 })
-export class CustomerComponent implements OnInit, AfterViewInit {
+export class CustomerComponent implements OnInit {
 
     sourcePlace: google.maps.places.PlaceResult;
     destinationPlace: google.maps.places.PlaceResult;
@@ -32,7 +32,7 @@ export class CustomerComponent implements OnInit, AfterViewInit {
             date: [''],
             time: [''],
             carType: ['', [Validators.required]],
-            bid: ['',[Validators.required]]
+            bid: ['', [Validators.required]]
         });
 
         this.subscription.add(this.rideSearchForm.get('rideSchedule').valueChanges.subscribe((value: number) => {
@@ -43,14 +43,16 @@ export class CustomerComponent implements OnInit, AfterViewInit {
                 this.enableRideTime = false;
             }
         }));
+
+        this.updatePickupAndDropLocation();
     }
 
-    ionViewWillEnter() {
-        console.log('ionViewWillEnter');
-        console.log(this.storage.keys)
+
+    private updatePickupAndDropLocation() {
         this.storage.get('source').then(val => {
             if (val) {
                 this.sourcePlace = val;
+                console.log(val);
                 this.rideSearchForm.get('pickupLocation').setValue(this.sourcePlace.name);
             }
         });
@@ -60,13 +62,6 @@ export class CustomerComponent implements OnInit, AfterViewInit {
                 this.rideSearchForm.get('dropLocation').setValue(this.destinationPlace.name);
             }
         });
-    }
-
-    ionViewDidEnter() {
-        console.log('ionViewDidEnter')
-    }
-    ngAfterViewInit(): void {
-        console.log('Hello - after view')
     }
 
     pickLocation(direction: string) {

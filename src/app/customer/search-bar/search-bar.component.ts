@@ -1,19 +1,22 @@
 
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
-import { IonSearchbar } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Marker } from '@agm/core/services/google-maps-types';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
+let goole: any;
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss'],
+  styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit {
 
   @ViewChild('searchbar', { static: false, read: ElementRef }) searchbar: ElementRef;
+  @ViewChild('serviceHelper', { static: false, read: ElementRef }) serviceHelper: ElementRef;
+  placeService;
   // @ViewChild('searchbar', { static: false }) public searchElementRef: ElementRef;
   map: google.maps.Map;
 
@@ -22,11 +25,9 @@ export class SearchBarComponent implements OnInit {
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl;
-  public zoom: number;
 
   ngOnInit() {
     // set google maps defaults
-    this.zoom = 4;
     this.latitude = 39.8282;
     this.longitude = -98.5795;
 
@@ -45,22 +46,20 @@ export class SearchBarComponent implements OnInit {
       const autocomplete = new google.maps.places.Autocomplete(searchInput, {
         types: ['address']
       });
+
       let place: google.maps.places.PlaceResult;
       autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
-          // get the place result
-          place = autocomplete.getPlace();
-          // verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-          // set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-          this.storage.set(fieldValue.field + '', JSON.parse(JSON.stringify(place))).then(success => console.log('Place', success));
-          this.router.navigate(['/']);
-        });
+        // get the place result
+        place = autocomplete.getPlace();
+        // verify result
+        if (place.geometry === undefined || place.geometry === null) {
+          return;
+        }
+        // set latitude, longitude and zoom
+        this.latitude = place.geometry.location.lat();
+        this.longitude = place.geometry.location.lng();
+        console.log(place);
+        this.storage.set(fieldValue.field, JSON.parse(JSON.stringify(place)));
       });
     });
 
@@ -71,9 +70,26 @@ export class SearchBarComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        this.zoom = 12;
       });
     }
+  }
+
+  private fetchPlaceDetails(location: google.maps.LatLng) {
+    this.placeService = new google.maps.places.PlacesService(this.serviceHelper.nativeElement);
+    let request: google.maps.places.TextSearchRequest = {
+      location: new google.maps.LatLng(this.latitude, this.longitude),
+      query: 'name'
+    }
+    this.placeService.textSearch(request, this.updatePlaceName)
+  }
+
+  private updatePlaceName(results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus, pagination: google.maps.places.PlaceSearchPagination) {
+    console.log(results);
+  }
+  markerDragEnd(m: Marker, $event: MouseEvent) {
+    console.log('dragEnd', m, $event);
+    const location = new google.maps.LatLng($event['coords']['lat'], $event['coords']['lng'])
+    this.fetchPlaceDetails(location);
   }
 
 }
