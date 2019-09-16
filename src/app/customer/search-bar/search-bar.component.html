@@ -7,7 +7,7 @@
         <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="17" #serviceHelper>
             <ion-list>
                 <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                (dragEnd)="markerDragEnd(m, $event)"></agm-marker>
+                (dragEnd)="markerDragEnd($event)"></agm-marker>
                 <ion-item>Amsterdam</ion-item>
             </ion-list>
         </agm-map>
