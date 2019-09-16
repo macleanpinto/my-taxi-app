@@ -34,7 +34,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     const fieldValue = history.state.data;
-    var searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
+    const searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(searchInput, {
@@ -69,8 +69,8 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
   }
 
   private fetchPlaceDetails() {
-    let geoCoderService = new google.maps.Geocoder();
-    let geocoderRequest: google.maps.GeocoderRequest = {
+    const geoCoderService = new google.maps.Geocoder();
+    const geocoderRequest: google.maps.GeocoderRequest = {
       location: new google.maps.LatLng(this.latitude, this.longitude)
     };
     geoCoderService.geocode(geocoderRequest, this.updatePlaceName.bind(this));
