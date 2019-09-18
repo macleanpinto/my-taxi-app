@@ -16,11 +16,11 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
       { path: 'search', component: SearchBarComponent }
     ]),
     AgmCoreModule.forRoot({
-      apiKey: '',
+      apiKey: 'AIzaSyAWmu0anN3l5ZmC0l_Lyee7IQi7Tkv_dg0',
       libraries: ['places']
     })
   ],
   declarations: [CustomerComponent, SearchBarComponent],
-  providers:[PricingService]
+  providers: [PricingService]
 })
 export class CustomerModule { }

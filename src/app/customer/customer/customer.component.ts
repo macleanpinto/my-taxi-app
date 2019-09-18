@@ -1,11 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
-import { Location } from 'src/app/models';
 import { PricingService } from 'src/app/providers/pricing.service';
 import { CarType, RideScheduleType } from '../../enums';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-customer',
@@ -23,7 +22,7 @@ export class CustomerComponent implements OnInit {
     enableRideTime = false;
     constructor(private router: Router, private pricingService: PricingService, private storage: Storage, private fb: FormBuilder) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
 
         this.rideSearchForm = this.fb.group({
             pickupLocation: ['Pickup From?', [Validators.required]],
@@ -36,10 +35,9 @@ export class CustomerComponent implements OnInit {
         });
 
         this.subscription.add(this.rideSearchForm.get('rideSchedule').valueChanges.subscribe((value: number) => {
-            if (RideScheduleType.later == value) {
+            if (RideScheduleType.later === value) {
                 this.enableRideTime = true;
-            }
-            else {
+            } else {
                 this.enableRideTime = false;
             }
         }));
@@ -65,13 +63,9 @@ export class CustomerComponent implements OnInit {
     }
 
     pickLocation(direction: string) {
-        this.router.navigate(['/search'], { state: { data: { field: direction } } });
+        this.router.navigate(['/search'], { state: { data: { field: direction } }, skipLocationChange: true });
     }
-
-    segmentChanged($event) {
-        console.log($event);
-    }
-    ngOnDestroy() {
+    ionViewDidLeave() {
         this.subscription.unsubscribe();
     }
 }

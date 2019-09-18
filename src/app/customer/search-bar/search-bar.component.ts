@@ -4,13 +4,15 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit } from 
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { FitBoundsService } from '@agm/core/services/fit-bounds';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss']
+  styleUrls: ['./search-bar.component.scss'],
+  providers: [FitBoundsService]
 })
-export class SearchBarComponent implements OnInit, AfterViewInit {
+export class SearchBarComponent {
 
   @ViewChild('searchbar', { static: false, read: ElementRef }) searchbar: ElementRef;
   @ViewChild('serviceHelper', { static: false, read: ElementRef }) serviceHelper: ElementRef;
@@ -22,17 +24,8 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
   public longitude: number;
   public searchControl: FormControl = new FormControl('', [Validators.required]);
 
-  ngOnInit() {
-    // set google maps defaults
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
-  }
-  ngAfterViewInit() {
-    // set current position
-    this.setCurrentPosition();
-  }
 
-  ionViewWillEnter() {
+  ionViewWillEnter(): void {
     const fieldValue = history.state.data;
     const searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
     // load Places Autocomplete
@@ -56,19 +49,26 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
       });
     });
 
+    this.setCurrentPosition();
+
+  }
+  markerDragEnd($event: any): void {
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.fetchPlaceDetails();
   }
 
-  private setCurrentPosition() {
+  private setCurrentPosition(): void {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
+        this.fetchPlaceDetails();
       });
-      this.fetchPlaceDetails();
     }
   }
 
-  private fetchPlaceDetails() {
+  private fetchPlaceDetails(): void {
     const geoCoderService = new google.maps.Geocoder();
     const geocoderRequest: google.maps.GeocoderRequest = {
       location: new google.maps.LatLng(this.latitude, this.longitude)
@@ -77,13 +77,9 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
   }
 
-  private updatePlaceName(results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) {
+  private updatePlaceName(results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus): void {
     this.searchControl.setValue(results[0].formatted_address);
   }
-  markerDragEnd($event: MouseEvent) {
-    this.latitude = $event['coords']['lat'];
-    this.longitude = $event['coords']['lng'];
-    this.fetchPlaceDetails();
-  }
+
 
 }

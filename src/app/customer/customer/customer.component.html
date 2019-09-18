@@ -31,7 +31,7 @@
 			<ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="rideTime"></ion-datetime>
 		</ion-item>
 
-		<ion-segment (ionChange)="segmentChanged($event)" formControlName="carType">
+		<ion-segment formControlName="carType">
 			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType">
 				<ion-label>{{CarType[carType]}}</ion-label>
 				<img src="../../../assets/icon/{{CarType[carType]}}.svg" alt="{{CarType[carType]}}">
@@ -46,7 +46,5 @@
 		<ion-item-divider></ion-item-divider>
 		<ion-button expand="block" class="ion-button">Confirm</ion-button>
 		<ion-button expand="block" class="ion-button">Cancel</ion-button>
-
-		{{this.sourcePlace | json}}
 	</ion-card-content>
 </ion-card>
