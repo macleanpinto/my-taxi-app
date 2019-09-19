@@ -16,7 +16,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
       { path: 'search', component: SearchBarComponent }
     ]),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAWmu0anN3l5ZmC0l_Lyee7IQi7Tkv_dg0',
+      apiKey: '',
       libraries: ['places']
     })
   ],

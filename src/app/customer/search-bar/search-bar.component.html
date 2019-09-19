@@ -1,15 +1,12 @@
-<ion-card>
-    <ion-card-header>
-        <ion-searchbar #searchbar showCancelButton="focus" animated="true" placeholder="Search for Location"
-            cancelButtonText="Cancel" class="form-control" [formControl]="searchControl"> </ion-searchbar>
-            <ion-button>OK</ion-button>
-    </ion-card-header>
-    <ion-card-content>
-        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="17" [restriction]="restriction" #serviceHelper>
-            <ion-list>
-                <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+<ion-content>
+    <ion-searchbar #searchbar showCancelButton="focus" animated="true" placeholder="Search for Location"
+        cancelButtonText="Cancel" class="form-control" [formControl]="searchControl"> </ion-searchbar>
+
+    <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="15" [restriction]="restriction"
+        #serviceHelper>
+        <ion-list>
+            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
                 (dragEnd)="markerDragEnd($event)"></agm-marker>
-            </ion-list>
-        </agm-map>
-    </ion-card-content>
-</ion-card>
+        </ion-list>
+    </agm-map>
+</ion-content>
