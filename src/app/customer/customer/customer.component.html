@@ -8,18 +8,16 @@
 			<ion-icon name="pin" slot="start"></ion-icon>
 			<ion-input (click)="pickLocation('to')" formControlName="dropLocation"></ion-input>
 		</ion-item>
-		<ion-list>
-			<ion-radio-group formControlName="rideSchedule">
-				<ion-item>
-					<ion-label>Ride Now</ion-label>
-					<ion-radio slot="start" value="0"></ion-radio>
-				</ion-item>
-				<ion-item>
-					<ion-label>Ride Later</ion-label>
-					<ion-radio slot="start" value="1"></ion-radio>
-				</ion-item>
-			</ion-radio-group>
-		</ion-list>
+		<ion-radio-group formControlName="rideSchedule">
+			<ion-item>
+				<ion-label>Now</ion-label>
+				<ion-radio slot="start" value="0"></ion-radio>
+			</ion-item>
+			<ion-item>
+				<ion-label>Later</ion-label>
+				<ion-radio slot="start" value="1"></ion-radio>
+			</ion-item>
+		</ion-radio-group>
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
@@ -32,16 +30,15 @@
 		</ion-item>
 
 		<ion-segment formControlName="carType">
-			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType">
-				<ion-label>{{CarType[carType]}}</ion-label>
+			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType" class="segment">
 				<img src="../../../assets/icon/{{CarType[carType]}}.svg" alt="{{CarType[carType]}}">
+				<ion-label>{{CarType[carType]}}</ion-label>
 			</ion-segment-button>
 		</ion-segment>
 
 		<ion-item>
-			<span class="fas fa-camera"></span>
-			<ion-label>Bid</ion-label>
-			<ion-input formControlName="bid"></ion-input>
+			<span class="fa fa-rupee"></span>
+			<ion-input class="bid" formControlName="bid"></ion-input>
 		</ion-item>
 		<ion-item-divider></ion-item-divider>
 		<ion-button expand="block" class="ion-button">Confirm</ion-button>

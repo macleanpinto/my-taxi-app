@@ -1,10 +1,12 @@
 
 import { MapsAPILoader } from '@agm/core';
-import { Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Data, NavigationEnd, NavigationStart } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FitBoundsService } from '@agm/core/services/fit-bounds';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-bar',
@@ -12,7 +14,7 @@ import { FitBoundsService } from '@agm/core/services/fit-bounds';
   styleUrls: ['./search-bar.component.scss'],
   providers: [FitBoundsService]
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('searchbar', { static: false, read: ElementRef }) searchbar: ElementRef;
@@ -20,7 +22,7 @@ export class SearchBarComponent implements OnInit {
   map: google.maps.Map;
 
   constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage, private route: ActivatedRoute) { }
-
+  private unsubscribe: Subject<void> = new Subject();
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl = new FormControl('', [Validators.required]);
@@ -28,11 +30,15 @@ export class SearchBarComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.fieldName = this.router.getCurrentNavigation().extras.state.data.field;
-      }
-    });
+    this.router.events
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          if (this.router.getCurrentNavigation().extras.state) {
+            this.fieldName = this.router.getCurrentNavigation().extras.state.data.field;
+          }
+        }
+      });
   }
   ionViewWillEnter(): void {
     const searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
@@ -93,5 +99,9 @@ export class SearchBarComponent implements OnInit {
     this.storage.set(this.fieldName, JSON.parse(JSON.stringify(results[0])));
   }
 
-
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 }
+
