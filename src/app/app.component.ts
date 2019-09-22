@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(
       (event) => {
         if (event instanceof NavigationEnd) {
-          console.log(event.url.trim(), event.url.trim().length)
           if (event.url === '/') {
             this.isHomePage = true;
           } else {

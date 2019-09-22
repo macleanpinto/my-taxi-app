@@ -2,7 +2,7 @@
 import { MapsAPILoader } from '@agm/core';
 import { Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Data, NavigationEnd, NavigationStart } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { FitBoundsService } from '@agm/core/services/fit-bounds';
 
@@ -12,21 +12,29 @@ import { FitBoundsService } from '@agm/core/services/fit-bounds';
   styleUrls: ['./search-bar.component.scss'],
   providers: [FitBoundsService]
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnInit {
+
 
   @ViewChild('searchbar', { static: false, read: ElementRef }) searchbar: ElementRef;
   @ViewChild('serviceHelper', { static: false, read: ElementRef }) serviceHelper: ElementRef;
   map: google.maps.Map;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage) { }
+  constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage, private route: ActivatedRoute) { }
 
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl = new FormControl('', [Validators.required]);
+  private fieldName: string;
 
 
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.fieldName = this.router.getCurrentNavigation().extras.state.data.field;
+      }
+    });
+  }
   ionViewWillEnter(): void {
-    const fieldValue = history.state.data;
     const searchInput = this.searchbar.nativeElement.querySelector('.searchbar-input');
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -45,7 +53,7 @@ export class SearchBarComponent {
         // set latitude, longitude and zoom
         this.latitude = place.geometry.location.lat();
         this.longitude = place.geometry.location.lng();
-        this.storage.set(fieldValue.field, JSON.parse(JSON.stringify(place)));
+        this.storage.set(this.fieldName, JSON.parse(JSON.stringify(place)));
       });
     });
 
@@ -56,6 +64,9 @@ export class SearchBarComponent {
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.fetchPlaceDetails();
+  }
+  navigateToHome() {
+    this.router.navigate(['/']);
   }
 
   private setCurrentPosition(): void {
@@ -79,6 +90,7 @@ export class SearchBarComponent {
 
   private updatePlaceName(results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus): void {
     this.searchControl.setValue(results[0].formatted_address);
+    this.storage.set(this.fieldName, JSON.parse(JSON.stringify(results[0])));
   }
 
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { PricingService } from 'src/app/providers/pricing.service';
@@ -11,7 +11,7 @@ import { CarType, RideScheduleType } from '../../enums';
     templateUrl: './customer.component.html',
     styleUrls: ['./customer.component.css']
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, OnDestroy {
 
     sourcePlace: google.maps.places.PlaceResult;
     destinationPlace: google.maps.places.PlaceResult;
@@ -28,44 +28,50 @@ export class CustomerComponent implements OnInit {
             pickupLocation: ['Pickup From?', [Validators.required]],
             dropLocation: ['Where To?', [Validators.required]],
             rideSchedule: ['0', [Validators.required]],
-            date: [''],
-            time: [''],
+            rideDate: [''],
+            rideTime: [''],
             carType: ['', [Validators.required]],
             bid: ['', [Validators.required]]
         });
 
         this.subscription.add(this.rideSearchForm.get('rideSchedule').valueChanges.subscribe((value: number) => {
-            if (RideScheduleType.later === value) {
+            if (RideScheduleType.later === +value) {
                 this.enableRideTime = true;
             } else {
                 this.enableRideTime = false;
             }
         }));
 
-        this.updatePickupAndDropLocation();
-    }
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                this.storage.keys().then((res: string[]) => {
+                    res.forEach(key => {
+                        this.storage.get(key).then((val: google.maps.GeocoderResult) => {
+                            if (val) {
+                                if (key === 'from') {
+                                    this.rideSearchForm.get('pickupLocation').setValue(val.formatted_address);
+                                } else if (key === 'to') {
+                                    this.rideSearchForm.get('dropLocation').setValue(val.formatted_address);
+                                }
 
+                            }
+                        });
+                    });
 
-    private updatePickupAndDropLocation() {
-        this.storage.get('source').then(val => {
-            if (val) {
-                this.sourcePlace = val;
-                console.log(val);
-                this.rideSearchForm.get('pickupLocation').setValue(this.sourcePlace.name);
+                });
             }
         });
-        this.storage.get('destination').then(val => {
-            if (val) {
-                this.destinationPlace = val;
-                this.rideSearchForm.get('dropLocation').setValue(this.destinationPlace.name);
-            }
-        });
+
     }
+
 
     pickLocation(direction: string) {
         this.router.navigate(['/search'], { state: { data: { field: direction } }, skipLocationChange: true });
     }
     ionViewDidLeave() {
         this.subscription.unsubscribe();
+    }
+    ngOnDestroy() {
+        console.log('fsdfsdfdsffdsf');
     }
 }
