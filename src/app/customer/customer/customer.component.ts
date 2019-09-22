@@ -14,8 +14,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CustomerComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
-    sourcePlace: google.maps.places.PlaceResult;
-    destinationPlace: google.maps.places.PlaceResult;
+    sourcePlace: google.maps.GeocoderResult;
+    destinationPlace: google.maps.GeocoderResult;
     CarType = CarType;
     carTypeList: CarType[] = [CarType.hatchback, CarType.sedan, CarType.suv, CarType.luxury];
     subscription: Subscription = new Subscription();
@@ -54,8 +54,10 @@ export class CustomerComponent implements OnInit, OnDestroy {
                             this.storage.get(key).then((val: google.maps.GeocoderResult) => {
                                 if (val) {
                                     if (key === 'from') {
+                                        this.sourcePlace = val;
                                         this.rideSearchForm.get('pickupLocation').setValue(val.formatted_address);
                                     } else if (key === 'to') {
+                                        this.destinationPlace = val;
                                         this.rideSearchForm.get('dropLocation').setValue(val.formatted_address);
                                     }
 

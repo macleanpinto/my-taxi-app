@@ -1,18 +1,19 @@
 
 import { MapsAPILoader } from '@agm/core';
-import { Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Data, NavigationEnd, NavigationStart } from '@angular/router';
-import { Storage } from '@ionic/storage';
 import { FitBoundsService } from '@agm/core/services/fit-bounds';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
-  providers: [FitBoundsService]
+  providers: [FitBoundsService, Geolocation]
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
 
@@ -21,7 +22,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   @ViewChild('serviceHelper', { static: false, read: ElementRef }) serviceHelper: ElementRef;
   map: google.maps.Map;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage, private route: ActivatedRoute) { }
+  constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage, private geolocation: Geolocation) { }
   private unsubscribe: Subject<void> = new Subject();
   public latitude: number;
   public longitude: number;
@@ -76,13 +77,21 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   private setCurrentPosition(): void {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.fetchPlaceDetails();
-      });
-    }
+    this.geolocation.getCurrentPosition().then((position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      this.fetchPlaceDetails();
+    }).catch((error) => {
+      console.log('Error getting location', error);
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+          this.fetchPlaceDetails();
+        });
+      }
+    });
+
   }
 
   private fetchPlaceDetails(): void {
