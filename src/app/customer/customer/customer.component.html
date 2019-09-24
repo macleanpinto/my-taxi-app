@@ -21,12 +21,12 @@
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
-			<ion-datetime placeholder="Select Date" formControlName="rideDate"></ion-datetime>
+			<ion-datetime display-format="MMM DD, YYYY" picker-format="MMM DD, YYYY" [min]="minDate"  [max]="maxDate" placeholder="Select Date" formControlName="rideDate"></ion-datetime>
 		</ion-item>
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="time" slot="start"></ion-icon>
 			<ion-label>Start Time</ion-label>
-			<ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="rideTime"></ion-datetime>
+			<ion-datetime display-format="HH:mm A" picker-format="HH:mm A" formControlName="rideTime" [min]="minTime"></ion-datetime>
 		</ion-item>
 
 		<ion-segment formControlName="carType">

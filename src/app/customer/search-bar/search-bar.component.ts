@@ -83,13 +83,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.fetchPlaceDetails();
     }).catch((error) => {
       console.log('Error getting location', error);
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude;
-          this.fetchPlaceDetails();
-        });
-      }
     });
 
   }
