@@ -1,12 +1,22 @@
 <ion-card>
 	<ion-card-content [formGroup]="rideSearchForm">
-		<ion-item>
+		<ion-item
+			*ngFor="let formControl of rideSearchForm.controls.pickupLocation.controls; let i = index; let first = first; let count = count; let last=last;">
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('from')" formControlName="pickupLocation"></ion-input>
+			<ion-input (click)="pickLocation('from',i)" [formControl]="formControl"></ion-input>
+			<ion-icon name="add" slot="end" *ngIf="first && count!=4"
+				(click)="addControl('pickupLocation','Pickup From?')"></ion-icon>
+			<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('pickupLocation',i)">
+			</ion-icon>
 		</ion-item>
-		<ion-item>
+		<ion-item
+			*ngFor="let formControl of rideSearchForm.controls.dropLocation.controls; let i=index; let first = first; let count = count; let last=last;">
 			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('to')" formControlName="dropLocation"></ion-input>
+			<ion-input (click)="pickLocation('to',i)" [formControl]="formControl"></ion-input>
+			<ion-icon name="add" slot="end" *ngIf="first && count!=4" (click)="addControl('dropLocation','Where To?')">
+			</ion-icon>
+			<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('dropLocation',i)">
+			</ion-icon>
 		</ion-item>
 		<ion-radio-group formControlName="rideSchedule">
 			<ion-item>
@@ -21,12 +31,14 @@
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="calendar" slot="start"></ion-icon>
 			<ion-label>Start Date</ion-label>
-			<ion-datetime display-format="MMM DD, YYYY" picker-format="MMM DD, YYYY" [min]="minDate"  [max]="maxDate" placeholder="Select Date" formControlName="rideDate"></ion-datetime>
+			<ion-datetime display-format="MMM DD, YYYY" picker-format="MMM DD, YYYY" [min]="minDate" [max]="maxDate"
+				placeholder="Select Date" formControlName="rideDate"></ion-datetime>
 		</ion-item>
 		<ion-item *ngIf="enableRideTime">
 			<ion-icon name="time" slot="start"></ion-icon>
 			<ion-label>Start Time</ion-label>
-			<ion-datetime display-format="HH:mm A" picker-format="HH:mm A" formControlName="rideTime" [min]="minTime"></ion-datetime>
+			<ion-datetime display-format="HH:mm A" picker-format="HH:mm A" formControlName="rideTime" [min]="minTime">
+			</ion-datetime>
 		</ion-item>
 
 		<ion-segment formControlName="carType">

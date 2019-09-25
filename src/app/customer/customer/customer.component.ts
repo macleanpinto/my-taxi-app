@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, NavigationEnd } from '@angular/router';
-import { Storage } from '@ionic/storage';
-import { Subscription, Subject } from 'rxjs';
-import * as moment from 'moment'
-import { CarType, RideScheduleType } from '../../enums';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DataService } from 'src/app/data.service';
+import { Place } from 'src/app/models';
+import { CarType, RideScheduleType } from '../../enums';
 
 @Component({
     selector: 'app-customer',
@@ -14,8 +15,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CustomerComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
-    sourcePlace: google.maps.GeocoderResult;
-    destinationPlace: google.maps.GeocoderResult;
+    sourcePlace: google.maps.GeocoderResult[] = [];
+    destinationPlace: google.maps.GeocoderResult[] = [];
     CarType = CarType;
     carTypeList: CarType[] = [CarType.hatchback, CarType.sedan, CarType.suv, CarType.luxury];
     subscription: Subscription = new Subscription();
@@ -24,13 +25,13 @@ export class CustomerComponent implements OnInit, OnDestroy {
     minDate = moment().format('YYYY-MM-DD');
     maxDate = moment().add(3, 'days').format('YYYY-MM-DD');
     minTime = moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm');
-    constructor(private router: Router, private storage: Storage, private fb: FormBuilder) { }
+    constructor(private router: Router, private fb: FormBuilder, private dataService: DataService) { }
 
     ngOnInit(): void {
 
         this.rideSearchForm = this.fb.group({
-            pickupLocation: ['Pickup From?', [Validators.required]],
-            dropLocation: ['Where To?', [Validators.required]],
+            pickupLocation: this.fb.array([new FormControl('Pickup From?', [Validators.required])]),
+            dropLocation: this.fb.array([new FormControl('Where To?', [Validators.required])]),
             rideSchedule: ['0', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
@@ -58,36 +59,37 @@ export class CustomerComponent implements OnInit, OnDestroy {
                     this.rideSearchForm.get('rideTime').setValue(this.minTime);
                 }
             }));
-
-        this.router.events
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe((event) => {
-                if (event instanceof NavigationEnd) {
-                    this.storage.keys().then((res: string[]) => {
-                        res.forEach(key => {
-                            this.storage.get(key).then((val: google.maps.GeocoderResult) => {
-                                if (val) {
-                                    if (key === 'from') {
-                                        this.sourcePlace = val;
-                                        this.rideSearchForm.get('pickupLocation').setValue(val.formatted_address);
-                                    } else if (key === 'to') {
-                                        this.destinationPlace = val;
-                                        this.rideSearchForm.get('dropLocation').setValue(val.formatted_address);
-                                    }
-
-                                }
-                            });
-                        });
-
-                    });
-                }
+        this.dataService.notify.pipe(takeUntil(this.unsubscribe))
+            .subscribe(() => {
+                this.dataService.source.forEach((place: Place) => {
+                    const formArray: any = this.rideSearchForm.get('pickupLocation');
+                    formArray.controls[place.index].setValue(place.loc.formatted_address);
+                });
+                this.dataService.destination.forEach((place: Place) => {
+                    const formArray: any = this.rideSearchForm.get('dropLocation');
+                    formArray.controls[place.index].setValue(place.loc.formatted_address);
+                });
             });
 
     }
 
 
-    pickLocation(direction: string) {
-        this.router.navigate(['/search'], { state: { data: { field: direction } }, skipLocationChange: true });
+    pickLocation(direction: string, i: number) {
+        this.router.navigate(['/search'], { state: { data: { field: direction, index: i } }, skipLocationChange: true });
+    }
+
+    addControl(formControlName: string, value: string) {
+        const formArray: any = this.rideSearchForm.get(formControlName);
+        if (formArray.length < 4) {
+            formArray.push(new FormControl(value, [Validators.required]));
+        }
+    }
+
+    removeControl(formControlName: string, index: number) {
+        const formArray: any = this.rideSearchForm.get(formControlName);
+        if (formArray.length > 1) {
+            formArray.removeAt(index);
+        }
     }
 
     ngOnDestroy() {

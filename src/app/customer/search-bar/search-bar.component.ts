@@ -4,10 +4,10 @@ import { FitBoundsService } from '@agm/core/services/fit-bounds';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -22,13 +22,16 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   @ViewChild('serviceHelper', { static: false, read: ElementRef }) serviceHelper: ElementRef;
   map: google.maps.Map;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private router: Router, private storage: Storage, private geolocation: Geolocation) { }
+  constructor(
+    private mapsAPILoader: MapsAPILoader, private router: Router,
+    private dataService: DataService, private geolocation: Geolocation) { }
+
   private unsubscribe: Subject<void> = new Subject();
+  private fieldName: string;
+  private index: number;
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl = new FormControl('', [Validators.required]);
-  private fieldName: string;
-
 
   ngOnInit(): void {
     this.router.events
@@ -37,6 +40,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         if (event instanceof NavigationEnd) {
           if (this.router.getCurrentNavigation().extras.state) {
             this.fieldName = this.router.getCurrentNavigation().extras.state.data.field;
+            this.index = this.router.getCurrentNavigation().extras.state.data.index;
           }
         }
       });
@@ -60,7 +64,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         // set latitude, longitude and zoom
         this.latitude = place.geometry.location.lat();
         this.longitude = place.geometry.location.lng();
-        this.storage.set(this.fieldName, JSON.parse(JSON.stringify(place)));
+        this.updateReduxStore(place);
       });
     });
 
@@ -98,10 +102,26 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   private updatePlaceName(results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus): void {
     this.searchControl.setValue(results[0].formatted_address);
-    this.storage.set(this.fieldName, JSON.parse(JSON.stringify(results[0])));
+    this.updateReduxStore(results[0]);
   }
 
-  ngOnDestroy() {
+  private updateReduxStore(place: google.maps.GeocoderResult | google.maps.places.PlaceResult): void {
+    switch (this.fieldName) {
+      case 'from': {
+        this.dataService.source.push({ index: this.index, loc: place });
+        break;
+      }
+      case 'to': {
+        this.dataService.destination.push({ index: this.index, loc: place });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    this.dataService.notify.next(true);
+  }
+  ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
