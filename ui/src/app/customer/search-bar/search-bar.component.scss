@@ -1,0 +1,30 @@
+agm-map {
+  height: 500px;
+}
+
+.form-control {
+  width: 80%;
+  display: inline-block;
+}
+
+.button {
+   vertical-align: middle;
+}
+@media only screen and (max-width: 600px) {
+  .form-control {
+    width: 80%;
+    display: inline-block;
+  }
+}
+@media only screen and (min-width: 700px) {
+  .form-control {
+    width: 90%;
+    display: inline-block;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .form-control {
+    width: 94%;
+    display: inline-block;
+  }
+}
