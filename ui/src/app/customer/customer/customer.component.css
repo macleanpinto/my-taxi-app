@@ -30,10 +30,22 @@ ion-label {
   margin-left: 22px;
 }
 
-
 @media only screen and (max-width: 400px) {
   ::ng-deep .segment > ion-label {
     font-weight: 700;
     font-size: 8px;
   }
+}
+
+.item-title {
+  display: block;
+  max-width: 112px;
+  padding: 0 7px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+fieldset {
+  border: 0px;
 }

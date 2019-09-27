@@ -70,7 +70,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
                     formArray.controls[place.index].setValue(place.loc.formatted_address);
                 });
             });
-
     }
 
 
@@ -90,6 +89,16 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (formArray.length > 1) {
             formArray.removeAt(index);
         }
+    }
+
+    get dropLocation() {
+        const formArray: any = this.rideSearchForm.get('dropLocation');
+        return formArray.controls;
+
+    }
+    get pickupLocation() {
+        const formArray: any = this.rideSearchForm.get('pickupLocation');
+        return formArray.controls;
     }
 
     ngOnDestroy() {
