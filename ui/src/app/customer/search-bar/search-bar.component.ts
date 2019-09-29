@@ -108,11 +108,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   private updateReduxStore(place: google.maps.GeocoderResult | google.maps.places.PlaceResult): void {
     switch (this.fieldName) {
       case 'from': {
-        this.dataService.source.push({ index: this.index, loc: place });
+        this.dataService.pickupLocation.set(this.index, place);
         break;
       }
       case 'to': {
-        this.dataService.destination.push({ index: this.index, loc: place });
+        this.dataService.dropLocation.set(this.index, place);
         break;
       }
       default: {

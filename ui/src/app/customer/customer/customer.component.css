@@ -48,4 +48,13 @@ ion-label {
 
 fieldset {
   border: 0px;
+  text-align: left;
+}
+
+.loc-item {
+  --padding-start: 6px;
+  --inner-padding-start: 6px;
+}
+ion-text {
+  font-size: 10px !important;
 }

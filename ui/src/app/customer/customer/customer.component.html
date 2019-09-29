@@ -1,32 +1,30 @@
-<ion-infinite-scroll threshold="100px" id="infinite-scroll">
-        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
-
-<ion-card>
+<ion-card class="ion-card">
 	<ion-card-content [formGroup]="rideSearchForm">
 		<fieldset>
 			<legend class="item-title">Pickup Location</legend>
-		<ion-item
-			*ngFor="let formControl of pickupLocation; let i = index; let first = first; let count = count; let last=last;">
-			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('from',i)" [formControl]="formControl"></ion-input>
-			<ion-icon name="add" slot="end" *ngIf="first && count!=4"
-				(click)="addControl('pickupLocation','Pickup From?')"></ion-icon>
-			<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('pickupLocation',i)">
-			</ion-icon>
-		</ion-item>
-	</fieldset>
-	<fieldset>
+			<ion-item class="loc-item"
+				*ngFor="let formControl of pickupLocation; let i = index; let first = first; let count = count; let last=last;">
+				<ion-icon name="pin" slot="start"></ion-icon>
+				<ion-input (click)="pickLocation('from',i)" [formControl]="formControl"></ion-input>
+				<ion-icon name="add" slot="end" *ngIf="first && count!=4"
+					(click)="addControl('pickupLocation','Pickup From?')"></ion-icon>
+				<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('pickupLocation',i)">
+				</ion-icon>
+			</ion-item>
+		</fieldset>
+		<fieldset>
 			<legend class="item-title">Drop Location</legend>
-		<ion-item
-			*ngFor="let formControl of dropLocation; let i=index; let first = first; let count = count; let last=last;">
-			<ion-icon name="pin" slot="start"></ion-icon>
-			<ion-input (click)="pickLocation('to',i)" [formControl]="formControl"></ion-input>
-			<ion-icon name="add" slot="end" *ngIf="first && count!=4" (click)="addControl('dropLocation','Where To?')">
-			</ion-icon>
-			<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('dropLocation',i)">
-			</ion-icon>
-		</ion-item>
-	</fieldset>
+			<ion-item class="loc-item"
+				*ngFor="let formControl of dropLocation; let i=index; let first = first; let count = count; let last=last;">
+				<ion-icon name="pin" slot="start"></ion-icon>
+				<ion-input (click)="pickLocation('to',i)" [formControl]="formControl"></ion-input>
+				<ion-icon name="add" slot="end" *ngIf="first && count!=4"
+					(click)="addControl('dropLocation','Where To?')">
+				</ion-icon>
+				<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('dropLocation',i)">
+				</ion-icon>
+			</ion-item>
+		</fieldset>
 		<ion-radio-group formControlName="rideSchedule">
 			<ion-item>
 				<ion-label>Now</ion-label>
@@ -61,10 +59,17 @@
 			<span class="fa fa-rupee"></span>
 			<ion-input class="bid" formControlName="bid"></ion-input>
 		</ion-item>
+		<ion-text color="danger" *ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('min')">
+			Bid amount cannot be less than 50
+		</ion-text>
+		<ion-text color="danger"
+			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('required')">
+			Bid amount is mandatory
+		</ion-text>
+
 		<ion-item-divider></ion-item-divider>
-		<ion-button expand="block" class="ion-button">Confirm</ion-button>
-		<ion-button expand="block" class="ion-button">Cancel</ion-button>
+
+		<ion-button expand="block" class="ion-button" (click)="requestForCab()">Confirm</ion-button>
+		<ion-button expand="block" class="ion-button" (cancel)="cancel()">Cancel</ion-button>
 	</ion-card-content>
 </ion-card>
-</ion-infinite-scroll-content>
-</ion-infinite-scroll>

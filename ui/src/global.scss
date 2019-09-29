@@ -25,11 +25,22 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+$fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome.scss";
+
 .align-center {
   width: 100%;
   display: flex;
   justify-content: center;
 }
+.ion-card {
+  overflow-y: scroll;
+}
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}
 
-$fa-font-path : "../node_modules/font-awesome/fonts";
-@import "../node_modules/font-awesome/scss/font-awesome.scss";
+::ng-deep .item-native {
+  padding-left: 0px !important;
+}
