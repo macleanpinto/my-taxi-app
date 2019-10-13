@@ -1,4 +1,5 @@
 <ion-card class="ion-card">
+	{{rideSearchForm.errors | json}}
 	<ion-card-content [formGroup]="rideSearchForm">
 		<fieldset>
 			<legend class="item-title">Pickup Location</legend>
@@ -11,6 +12,7 @@
 				<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('pickupLocation',i)">
 				</ion-icon>
 			</ion-item>
+		
 		</fieldset>
 		<fieldset>
 			<legend class="item-title">Drop Location</legend>
@@ -25,7 +27,7 @@
 				</ion-icon>
 			</ion-item>
 		</fieldset>
-		<ion-radio-group formControlName="rideSchedule">
+		<ion-radio-group formControlName="rideScheduleType">
 			<ion-item>
 				<ion-label>Now</ion-label>
 				<ion-radio slot="start" value="0"></ion-radio>

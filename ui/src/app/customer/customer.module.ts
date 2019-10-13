@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LibraryModule } from '../library.module';
 import { PricingService } from '../providers/pricing.service';
+import { custStoreProviders } from './customer.store';
 import { CustomerComponent } from './customer/customer.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 
@@ -21,6 +22,6 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     })
   ],
   declarations: [CustomerComponent, SearchBarComponent],
-  providers: [PricingService]
+  providers: [PricingService, custStoreProviders]
 })
 export class CustomerModule { }

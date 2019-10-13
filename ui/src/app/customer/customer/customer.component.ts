@@ -1,12 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { Store } from 'redux';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DataService } from 'src/app/data.service';
-import { Place, RideSearchRequest } from 'src/app/models';
+import { RideSearchRequest } from 'src/app/models';
 import { CarType, RideScheduleType } from '../../enums';
+import * as customerActions from '../customer.actions';
+import { CustomerState } from '../customer.state';
+import { CustStore } from '../customer.store';
+import { CreateAction } from '../customer.action';
 
 @Component({
     selector: 'app-customer',
@@ -23,13 +27,32 @@ export class CustomerComponent implements OnInit, OnDestroy {
     minDate = moment().format('YYYY-MM-DD');
     maxDate = moment().add(3, 'days').format('YYYY-MM-DD');
     minTime = moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm');
-    constructor(private router: Router, private fb: FormBuilder, private dataService: DataService) { }
+    private rideSearchRequest: RideSearchRequest;
+
+    constructor(private router: Router, private fb: FormBuilder,
+        @Inject(CustStore) private store: Store<CustomerState>) {
+        store.subscribe(() => this.readState());
+        this.readState();
+    }
 
     ngOnInit(): void {
         this.InitializeForm();
         this.toggleRideSchedule();
         this.setPickupTimeRanges();
-        this.setPickupAndDropLocation();
+    }
+    readState() {
+        const state: CustomerState = this.store.getState();
+        this.rideSearchRequest = Object.assign({}, state.rideSearchRequest);
+        this.rideSearchRequest.pickupLocation.forEach(
+            (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
+                const formArray: any = this.rideSearchForm.get('pickupLocation');
+                formArray.controls[index].setValue(place.formatted_address);
+            });
+        this.rideSearchRequest.dropLocation.forEach(
+            (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
+                const formArray: any = this.rideSearchForm.get('dropLocation');
+                formArray.controls[index].setValue(place.formatted_address);
+            });
     }
     get dropLocation() {
         const formArray: any = this.rideSearchForm.get('dropLocation');
@@ -49,6 +72,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (formArray.length < 4) {
             formArray.push(new FormControl(value, [Validators.required]));
         }
+        this.rideSearchRequest[formControlName].push(null);
+        this.updateReduxStore();
+    }
+
+    private updateReduxStore() {
+        this.store.dispatch(customerActions.create(this.rideSearchForm));
     }
 
     removeControl(formControlName: string, index: number) {
@@ -56,53 +85,41 @@ export class CustomerComponent implements OnInit, OnDestroy {
         if (formArray.length > 1) {
             formArray.removeAt(index);
         }
-        this.dataService[formControlName].pop();
+        this.rideSearchRequest[formControlName].pop();
+        this.updateReduxStore();
     }
     cancel() {
+        this.store.dispatch(customerActions.clear());
         this.rideSearchForm.reset();
     }
     requestForCab() {
         console.log(this.rideSearchForm.errors);
         const pickupLocation = [];
-        this.dataService.pickupLocation.forEach(
+        this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
                 pickupLocation.push(place);
             });
         const dropLocation = [];
-        this.dataService.pickupLocation.forEach(
+        this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
                 dropLocation.push(place);
             });
         const rideSearchRequest: RideSearchRequest = {
             pickupLocation,
             dropLocation,
-            rideSchedule: this.rideSearchForm.get('rideSchedule').value,
+            rideScheduleType: this.rideSearchForm.get('rideScheduleType').value,
             rideDate: this.rideSearchForm.get('rideDate').value,
             rideTime: this.rideSearchForm.get('rideTime').value,
             carType: this.rideSearchForm.get('carType').value,
             bid: this.rideSearchForm.get('bid').value
         };
+        this.store.dispatch(customerActions.create(rideSearchRequest));
     }
 
     onScroll($event) {
         console.log($event);
     }
 
-    private setPickupAndDropLocation() {
-        this.dataService.notify.pipe(takeUntil(this.unsubscribe))
-            .subscribe(() => {
-                this.dataService.pickupLocation.forEach(
-                    (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                        const formArray: any = this.rideSearchForm.get('pickupLocation');
-                        formArray.controls[index].setValue(place.formatted_address);
-                    });
-                this.dataService.dropLocation.forEach(
-                    (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                        const formArray: any = this.rideSearchForm.get('dropLocation');
-                        formArray.controls[index].setValue(place.formatted_address);
-                    });
-            });
-    }
 
     private setPickupTimeRanges() {
         this.rideSearchForm.get('rideDate').valueChanges
@@ -118,7 +135,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     private toggleRideSchedule() {
-        this.rideSearchForm.get('rideSchedule').valueChanges
+        this.rideSearchForm.get('rideScheduleType').valueChanges
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((value: number) => {
                 if (RideScheduleType.later === +value) {
@@ -133,7 +150,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
         this.rideSearchForm = this.fb.group({
             pickupLocation: this.fb.array([new FormControl('Pickup From?', [Validators.required])]),
             dropLocation: this.fb.array([new FormControl('Where To?', [Validators.required])]),
-            rideSchedule: ['0', [Validators.required]],
+            rideScheduleType: ['0', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
             carType: ['', [Validators.required]],

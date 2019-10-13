@@ -6,3 +6,11 @@ export class CreateAction implements Action {
 
     constructor(public payload: RideSearchRequest) { }
 }
+
+
+export class ClearAction implements Action {
+    readonly type = 'CLEAR';
+
+    constructor() { }
+}
+

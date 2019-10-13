@@ -1,13 +1,17 @@
 
 import { MapsAPILoader } from '@agm/core';
 import { FitBoundsService } from '@agm/core/services/fit-bounds';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, InjectionToken, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DataService } from 'src/app/data.service';
+import { CustStore } from '../customer.store';
+import { Store } from 'redux';
+import { CustomerState } from '../customer.state';
+import { RideSearchRequest } from 'src/app/models';
+import * as CustomerActions from '../customer.actions';
 
 @Component({
   selector: 'app-search-bar',
@@ -24,7 +28,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private mapsAPILoader: MapsAPILoader, private router: Router,
-    private dataService: DataService, private geolocation: Geolocation) { }
+    private geolocation: Geolocation,
+    @Inject(CustStore) private store: Store<CustomerState>) {
+    store.subscribe(() => this.readState());
+    this.readState();
+  }
 
   private unsubscribe: Subject<void> = new Subject();
   private fieldName: string;
@@ -32,6 +40,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl = new FormControl('', [Validators.required]);
+  private rideSearchRequest: RideSearchRequest;
 
   ngOnInit(): void {
     this.router.events
@@ -71,6 +80,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.setCurrentPosition();
 
   }
+
+  readState() {
+    const state: CustomerState = this.store.getState();
+    this.rideSearchRequest = Object.assign({}, state.rideSearchRequest);
+  }
   markerDragEnd($event: any): void {
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
@@ -105,21 +119,21 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.updateReduxStore(results[0]);
   }
 
-  private updateReduxStore(place: google.maps.GeocoderResult | google.maps.places.PlaceResult): void {
+  private updateReduxStore(place): void {
     switch (this.fieldName) {
       case 'from': {
-        this.dataService.pickupLocation.set(this.index, place);
+        this.rideSearchRequest.pickupLocation[this.index] = place;
         break;
       }
       case 'to': {
-        this.dataService.dropLocation.set(this.index, place);
+        this.rideSearchRequest.dropLocation[this.index] = place;
         break;
       }
       default: {
         break;
       }
     }
-    this.dataService.notify.next(true);
+    this.store.dispatch(CustomerActions.create(this.rideSearchRequest));
   }
   ngOnDestroy(): void {
     this.unsubscribe.next();

@@ -1,28 +1,32 @@
-/**
- * Counter Reducer
- */
 import { Action, Reducer } from 'redux';
-import { CarType } from '../enums';
-import { CreateAction } from './customer.action';
+import { CarType, RideScheduleType } from '../enums';
 import { CustomerState } from './customer.state';
+import { CreateAction } from './customer.action';
 
 const initialState: CustomerState = {
-    pickupLocation: new Map(),
-    dropLocation: new Map(),
-    rideSchedule: '',
-    rideDate: '',
-    rideTime: '',
-    carType: CarType.hatchback,
-    bid: 100
+    rideSearchRequest: {
+        pickupLocation: new Array(4),
+        dropLocation: new Array(4),
+        rideScheduleType: RideScheduleType.later,
+        rideDate: '',
+        rideTime: '',
+        carType: CarType.hatchback,
+        bid: 100
+    }
 };
 
 // Create our reducer that will handle changes to the state
-export const counterReducer: Reducer<CustomerState> =
-    (state: CustomerState = initialState, action: CreateAction): CustomerState => {
+export const customerReducer: Reducer<CustomerState> =
+    (state: CustomerState = initialState, action: Action): CustomerState => {
         switch (action.type) {
             case 'CREATE':
-                return Object.assign({}, state, action.payload);
+                return Object.assign({}, state, (action as CreateAction).payload);
+                break;
+            case 'CLEAR':
+                return Object.assign({}, initialState);
+                break;
             default:
                 return state;
+                break;
         }
     };
