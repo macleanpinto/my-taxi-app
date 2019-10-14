@@ -23,7 +23,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     carTypeList: CarType[] = [CarType.hatchback, CarType.sedan, CarType.suv, CarType.luxury];
     subscription: Subscription = new Subscription();
     rideSearchForm: FormGroup;
-    enableRideTime = false;
+    enableRideTime = true;
     minDate = moment().format('YYYY-MM-DD');
     maxDate = moment().add(3, 'days').format('YYYY-MM-DD');
     minTime = moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm');
@@ -150,10 +150,10 @@ export class CustomerComponent implements OnInit, OnDestroy {
         this.rideSearchForm = this.fb.group({
             pickupLocation: this.fb.array([new FormControl('Pickup From?', [Validators.required])]),
             dropLocation: this.fb.array([new FormControl('Where To?', [Validators.required])]),
-            rideScheduleType: ['0', [Validators.required]],
+            rideScheduleType: [RideScheduleType.later + '', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
-            vehicleType: [VehicleType.car, [Validators.required]],
+            vehicleType: [VehicleType.car + '', [Validators.required]],
             carType: [CarType.sedan, [Validators.required]],
             bid: ['', [Validators.required, Validators.min(50)]],
             updateOn: 'blur'
