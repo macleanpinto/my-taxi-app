@@ -3,8 +3,11 @@ ion-label {
   margin: 0;
 }
 
-.segment > img {
+img {
   width: 44px;
+}
+.tuk-tuk {
+  width: 33px;
 }
 
 .ion-button {

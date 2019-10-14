@@ -1,5 +1,4 @@
 <ion-card class="ion-card">
-	{{rideSearchForm.errors | json}}
 	<ion-card-content [formGroup]="rideSearchForm">
 		<fieldset>
 			<legend class="item-title">Pickup Location</legend>
@@ -49,9 +48,19 @@
 			<ion-datetime display-format="HH:mm A" picker-format="HH:mm A" formControlName="rideTime" [min]="minTime">
 			</ion-datetime>
 		</ion-item>
+		<ion-segment formControlName="vehicleType">
+			<ion-segment-button [value]="car">
+				<img src="../../../assets/icon/sedan.svg" alt="car">
+				<ion-label>car</ion-label>
+			</ion-segment-button>
+			<ion-segment-button [value]="car">
+				<img src="../../../assets/icon/tuk-tuk.svg" alt="auto" class="tuk-tuk">
+				<ion-label>auto</ion-label>
+			</ion-segment-button>
+		</ion-segment>
 
 		<ion-segment formControlName="carType">
-			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType" class="segment">
+			<ion-segment-button *ngFor="let carType of carTypeList" [value]="carType">
 				<img src="../../../assets/icon/{{CarType[carType]}}.svg" alt="{{CarType[carType]}}">
 				<ion-label>{{CarType[carType]}}</ion-label>
 			</ion-segment-button>
@@ -71,7 +80,7 @@
 
 		<ion-item-divider></ion-item-divider>
 
-		<ion-button expand="block" class="ion-button" (click)="requestForCab()">Confirm</ion-button>
+		<ion-button expand="block" class="ion-button" (click)="requestForCab()" [disabled]="!rideSearchForm.valid">Confirm</ion-button>
 		<ion-button expand="block" class="ion-button" (cancel)="cancel()">Cancel</ion-button>
 	</ion-card-content>
 </ion-card>

@@ -6,7 +6,7 @@ import { Store } from 'redux';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RideSearchRequest } from 'src/app/models';
-import { CarType, RideScheduleType } from '../../enums';
+import { CarType, RideScheduleType, VehicleType } from '../../enums';
 import * as customerActions from '../customer.actions';
 import { CustomerState } from '../customer.state';
 import { CustStore } from '../customer.store';
@@ -153,7 +153,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
             rideScheduleType: ['0', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
-            carType: ['', [Validators.required]],
+            vehicleType: [VehicleType.car, [Validators.required]],
+            carType: [CarType.sedan, [Validators.required]],
             bid: ['', [Validators.required, Validators.min(50)]],
             updateOn: 'blur'
         });
