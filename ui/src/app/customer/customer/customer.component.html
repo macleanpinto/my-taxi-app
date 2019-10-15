@@ -71,6 +71,11 @@
 			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('required')">
 			Bid amount is mandatory
 		</ion-text>
+        <ion-text color="danger"
+			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('pattern')">
+			Bid amount must a valid number
+		</ion-text>
+        {{rideSearchForm.get('bid').errors | json}}
 
 		<ion-item-divider></ion-item-divider>
 

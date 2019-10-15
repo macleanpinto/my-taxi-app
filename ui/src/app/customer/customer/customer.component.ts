@@ -155,7 +155,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
             rideTime: [this.minTime],
             vehicleType: [VehicleType.car + '', [Validators.required]],
             carType: [CarType.sedan, [Validators.required]],
-            bid: ['', [Validators.required, Validators.min(50)]],
+            bid: ['', [Validators.required, Validators.min(50), Validators.pattern("[5-9]{0-10}")]],
             updateOn: 'blur'
         });
     }
