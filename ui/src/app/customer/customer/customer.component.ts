@@ -29,7 +29,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
     minTime = moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm');
     private rideSearchRequest: RideSearchRequest;
 
-    constructor(private router: Router, private fb: FormBuilder,
+    constructor(
+        private router: Router, private fb: FormBuilder,
         @Inject(CustStore) private store: Store<CustomerState>) {
         store.subscribe(() => this.readState());
         this.readState();
@@ -70,7 +71,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     addControl(formControlName: string, value: string) {
         const formArray: any = this.rideSearchForm.get(formControlName);
         if (formArray.length < 4) {
-            formArray.push(new FormControl(value, [Validators.required]));
+            formArray.push(new FormControl(value, [this.validateLocation]));
         }
         this.rideSearchRequest[formControlName].push(null);
         this.updateReduxStore();
@@ -148,16 +149,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     private InitializeForm() {
         this.rideSearchForm = this.fb.group({
-            pickupLocation: this.fb.array([new FormControl('Pickup From?', [Validators.required])]),
-            dropLocation: this.fb.array([new FormControl('Where To?', [Validators.required])]),
+            pickupLocation: this.fb.array([new FormControl('Pickup From?', [this.validateLocation])]),
+            dropLocation: this.fb.array([new FormControl('Where To?', [this.validateLocation])]),
             rideScheduleType: [RideScheduleType.later + '', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
             vehicleType: [VehicleType.car + '', [Validators.required]],
             carType: [CarType.sedan, [Validators.required]],
-            bid: ['', [Validators.required, Validators.min(50), Validators.pattern("[5-9]{0-10}")]],
+            bid: ['', [Validators.required, Validators.min(50), Validators.pattern('\\d+')]],
             updateOn: 'blur'
         });
+    }
+
+    private validateLocation(c: FormControl) {
+        console.log((/^(Pickup From?|Where To?)$/).test(c.value), c.value);
+        return c.value.match(/Pickup From?/) ? {
+            required: {
+                valid: false
+            }
+        } : null;
     }
 
 

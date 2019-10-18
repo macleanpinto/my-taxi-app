@@ -18,7 +18,7 @@
 			<ion-item class="loc-item"
 				*ngFor="let formControl of dropLocation; let i=index; let first = first; let count = count; let last=last;">
 				<ion-icon name="pin" slot="start"></ion-icon>
-				<ion-input (click)="pickLocation('to',i)" [formControl]="formControl"></ion-input>
+				<ion-input (click)="dropLocation('to',i)" [formControl]="formControl"></ion-input>
 				<ion-icon name="add" slot="end" *ngIf="first && count!=4"
 					(click)="addControl('dropLocation','Where To?')">
 				</ion-icon>
@@ -45,7 +45,7 @@
 			<ion-datetime display-format="HH:mm A" picker-format="HH:mm A" formControlName="rideTime" [min]="minTime">
 			</ion-datetime>
 		</ion-item>
-		<ion-item>
+		<ion-item *ngIf="false">
 			<ion-label>Vehicle Type</ion-label>
 			<ion-select placeholder="Select Vehicle Type" formControlName="vehicleType">
 				<ion-select-option value="0">Car</ion-select-option>
@@ -75,7 +75,7 @@
 			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('pattern')">
 			Bid amount must a valid number
 		</ion-text>
-        {{rideSearchForm.get('bid').errors | json}}
+        {{rideSearchForm.get('pickupLocation').errors | json}}
 
 		<ion-item-divider></ion-item-divider>
 
