@@ -64,17 +64,15 @@ export class CustomerComponent implements OnInit, OnDestroy {
         const formArray: any = this.rideSearchForm.get('pickupLocation');
         return formArray.controls;
     }
-    pickLocation(direction: string, i: number) {
+    searchLocation(direction: string, i: number) {
         this.router.navigate(['/search'], { state: { data: { field: direction, index: i } }, skipLocationChange: true });
     }
 
     addControl(formControlName: string, value: string) {
         const formArray: any = this.rideSearchForm.get(formControlName);
         if (formArray.length < 4) {
-            formArray.push(new FormControl(value, [this.validateLocation]));
+            formArray.push(new FormControl(value, [this.validateLocation, Validators.required]));
         }
-        this.rideSearchRequest[formControlName].push(null);
-        this.updateReduxStore();
     }
 
     private updateReduxStore() {
@@ -149,8 +147,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     private InitializeForm() {
         this.rideSearchForm = this.fb.group({
-            pickupLocation: this.fb.array([new FormControl('Pickup From?', [this.validateLocation])]),
-            dropLocation: this.fb.array([new FormControl('Where To?', [this.validateLocation])]),
+            pickupLocation: this.fb.array([new FormControl('Pickup From?', [this.validateLocation, Validators.required])]),
+            dropLocation: this.fb.array([new FormControl('Where To?', [this.validateLocation, Validators.required])]),
             rideScheduleType: [RideScheduleType.later + '', [Validators.required]],
             rideDate: [this.minDate],
             rideTime: [this.minTime],
@@ -162,8 +160,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     private validateLocation(c: FormControl) {
-        console.log((/^(Pickup From?|Where To?)$/).test(c.value), c.value);
-        return c.value.match(/Pickup From?/) ? {
+        return c.value.match(/Pickup|Where/g) ? {
             required: {
                 valid: false
             }

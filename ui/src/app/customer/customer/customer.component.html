@@ -2,29 +2,40 @@
 	<ion-card-content [formGroup]="rideSearchForm">
 		<fieldset>
 			<legend class="item-title">Pickup Location</legend>
-			<ion-item class="loc-item"
+			<ion-list
 				*ngFor="let formControl of pickupLocation; let i = index; let first = first; let count = count; let last=last;">
-				<ion-icon name="pin" slot="start"></ion-icon>
-				<ion-input (click)="pickLocation('from',i)" [formControl]="formControl"></ion-input>
-				<ion-icon name="add" slot="end" *ngIf="first && count!=4"
-					(click)="addControl('pickupLocation','Pickup From?')"></ion-icon>
-				<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('pickupLocation',i)">
-				</ion-icon>
-			</ion-item>
+				<ion-item class="loc-item">
+					<ion-icon name="pin" slot="start"></ion-icon>
+					<ion-input (click)="searchLocation('from',i)" [formControl]="formControl"></ion-input>
+					<ion-icon name="add" slot="end" *ngIf="first && count!=4"
+						(click)="addControl('pickupLocation','Pickup From?')"></ion-icon>
+					<ion-icon name="remove" slot="end" *ngIf="last && !first"
+						(click)="removeControl('pickupLocation',i)">
+					</ion-icon>
+				</ion-item>
+				<ion-text color="danger" *ngIf="formControl.touched && formControl.hasError('required')">
+					Pickup Location is mandatory
+				</ion-text>
+			</ion-list>
 
 		</fieldset>
 		<fieldset>
 			<legend class="item-title">Drop Location</legend>
-			<ion-item class="loc-item"
+			<ion-list
 				*ngFor="let formControl of dropLocation; let i=index; let first = first; let count = count; let last=last;">
-				<ion-icon name="pin" slot="start"></ion-icon>
-				<ion-input (click)="dropLocation('to',i)" [formControl]="formControl"></ion-input>
-				<ion-icon name="add" slot="end" *ngIf="first && count!=4"
-					(click)="addControl('dropLocation','Where To?')">
-				</ion-icon>
-				<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('dropLocation',i)">
-				</ion-icon>
-			</ion-item>
+				<ion-item class="loc-item">
+					<ion-icon name="pin" slot="start"></ion-icon>
+					<ion-input (click)="searchLocation('to',i)" [formControl]="formControl"></ion-input>
+					<ion-icon name="add" slot="end" *ngIf="first && count!=4"
+						(click)="addControl('dropLocation','Where To?')">
+					</ion-icon>
+					<ion-icon name="remove" slot="end" *ngIf="last && !first" (click)="removeControl('dropLocation',i)">
+					</ion-icon>
+				</ion-item>
+				<ion-text color="danger" *ngIf="formControl.touched && formControl.hasError('required')">
+					Drop Location is mandatory
+				</ion-text>
+			</ion-list>
 		</fieldset>
 		<ion-item>
 			<ion-label>Ride Schedule Type</ion-label>
@@ -71,12 +82,10 @@
 			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('required')">
 			Bid amount is mandatory
 		</ion-text>
-        <ion-text color="danger"
+		<ion-text color="danger"
 			*ngIf="rideSearchForm.get('bid').touched && rideSearchForm.get('bid').hasError('pattern')">
 			Bid amount must a valid number
 		</ion-text>
-        {{rideSearchForm.get('pickupLocation').errors | json}}
-
 		<ion-item-divider></ion-item-divider>
 
 		<ion-button expand="block" class="ion-button" (click)="requestForCab()" [disabled]="!rideSearchForm.valid">
