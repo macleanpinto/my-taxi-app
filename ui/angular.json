@@ -39,7 +39,13 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/firebase/firebase-app.js",
+              "./node_modules/firebase/firebase-auth.js",
+              "./node_modules/firebase/firebase-database.js",
+              "./node_modules/firebase/firebase-messaging.js",
+              "./node_modules/firebase/firebase-storage.js"
+            ]
           },
           "configurations": {
             "production": {
