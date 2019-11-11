@@ -11,6 +11,7 @@ import * as customerActions from '../customer.actions';
 import { CustomerState } from '../customer.state';
 import { CustStore } from '../customer.store';
 import { CreateAction } from '../customer.action';
+import * as firebase from 'firebase/app';
 
 @Component({
     selector: 'app-customer',
@@ -113,6 +114,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
             bid: this.rideSearchForm.get('bid').value
         };
         this.store.dispatch(customerActions.create(rideSearchRequest));
+        var collection = firebase.firestore().collection('cabSearchRequests');
+        return collection.add(rideSearchRequest);
     }
 
     onScroll($event) {

@@ -1,36 +1,59 @@
 <ion-app>
-  <ion-header translucent>
-    <ion-toolbar>
-      <ion-title>MyTaxi</ion-title>
-      <ion-buttons slot="start" *ngIf="!isHomePage">
-        <ion-back-button defaultHref="/"></ion-back-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-router-outlet></ion-router-outlet>
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="ride_later">
-          <mat-icon>departure_board</mat-icon>
-          <ion-label>Ride Later</ion-label>
-        </ion-tab-button>
+	<ion-header translucent>
+		<ion-toolbar>
+			<ion-title>MyTaxi</ion-title>
+			<ion-buttons slot="start" *ngIf="!isHomePage">
+				<ion-back-button defaultHref="/"></ion-back-button>
+			</ion-buttons>
+		</ion-toolbar>
+	</ion-header>
+	<ion-content>
+		<ion-router-outlet></ion-router-outlet>
+		<ion-tabs>
+			<ion-tab-bar slot="bottom">
+				<ion-tab-button tab="ride_later">
+					<mat-icon>departure_board</mat-icon>
+					<ion-label>Ride Later</ion-label>
+				</ion-tab-button>
 
-        <ion-tab-button tab="ride_now">
-          <ion-icon name="car"></ion-icon>
-          <ion-label>Ride Now</ion-label>
-        </ion-tab-button>
+				<ion-tab-button tab="ride_now">
+					<ion-icon name="car"></ion-icon>
+					<ion-label>Ride Now</ion-label>
+				</ion-tab-button>
 
-        <ion-tab-button tab="map">
-          <ion-icon name="map"></ion-icon>
-          <ion-label>Map</ion-label>
-        </ion-tab-button>
+				<ion-tab-button tab="map">
+					<ion-icon name="map"></ion-icon>
+					<ion-label>Map</ion-label>
+				</ion-tab-button>
 
-        <ion-tab-button tab="about">
-          <ion-icon name="information-circle"></ion-icon>
-          <ion-label>About</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-  </ion-content>
+				<ion-tab-button tab="about">
+					<ion-icon name="information-circle"></ion-icon>
+					<ion-label>About</ion-label>
+				</ion-tab-button>
+			</ion-tab-bar>
+		</ion-tabs>
+	</ion-content>
 </ion-app>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      // // The Firebase SDK is initialized and available here!
+      //
+      // firebase.auth().onAuthStateChanged(user => { });
+      // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+      // firebase.messaging().requestPermission().then(() => { });
+      // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+      //
+      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+      try {
+        let app = firebase.app();
+        let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+        document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      } catch (e) {
+        console.error(e);
+        document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+      }
+    });
+</script>
