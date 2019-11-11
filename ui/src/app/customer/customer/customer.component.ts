@@ -11,7 +11,7 @@ import * as customerActions from '../customer.actions';
 import { CustomerState } from '../customer.state';
 import { CustStore } from '../customer.store';
 import { CreateAction } from '../customer.action';
-import * as firebase from 'firebase/app';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-customer',
@@ -32,7 +32,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router, private fb: FormBuilder,
-        @Inject(CustStore) private store: Store<CustomerState>) {
+        @Inject(CustStore) private store: Store<CustomerState>,
+        private firestore: AngularFirestore) {
         store.subscribe(() => this.readState());
         this.readState();
     }
@@ -105,17 +106,16 @@ export class CustomerComponent implements OnInit, OnDestroy {
                 dropLocation.push(place);
             });
         const rideSearchRequest: RideSearchRequest = {
-            pickupLocation,
-            dropLocation,
             rideScheduleType: this.rideSearchForm.get('rideScheduleType').value,
             rideDate: this.rideSearchForm.get('rideDate').value,
             rideTime: this.rideSearchForm.get('rideTime').value,
             carType: this.rideSearchForm.get('carType').value,
             bid: this.rideSearchForm.get('bid').value
         };
+        console.log(pickupLocation);
         this.store.dispatch(customerActions.create(rideSearchRequest));
-        var collection = firebase.firestore().collection('cabSearchRequests');
-        return collection.add(rideSearchRequest);
+        const collection = this.firestore.collection('cabSearchRequests');
+        return collection.add(pickupLocation[0]);
     }
 
     onScroll($event) {

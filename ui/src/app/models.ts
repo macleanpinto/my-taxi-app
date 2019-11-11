@@ -10,8 +10,8 @@ export interface Place {
 }
 
 export interface RideSearchRequest {
-    pickupLocation: google.maps.GeocoderResult[] | google.maps.places.PlaceResult[];
-    dropLocation: google.maps.GeocoderResult[] | google.maps.places.PlaceResult[];
+    pickupLocation?: google.maps.GeocoderResult[] | google.maps.places.PlaceResult[];
+    dropLocation?: google.maps.GeocoderResult[] | google.maps.places.PlaceResult[];
     rideScheduleType: RideScheduleType;
     rideDate: string;
     rideTime: string;
