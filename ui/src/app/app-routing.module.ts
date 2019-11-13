@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: './customer/customer.module#CustomerModule' },
+  { path: 'driver', loadChildren: './driver/driver.module#DriverModule' },
 ];
 @NgModule({
   imports: [
