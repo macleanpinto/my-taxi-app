@@ -94,28 +94,28 @@ export class CustomerComponent implements OnInit, OnDestroy {
         this.rideSearchForm.reset();
     }
     requestForCab() {
-        console.log(this.rideSearchForm.errors);
         const pickupLocation = [];
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                pickupLocation.push(place);
+                pickupLocation.push({ place_id: place.place_id });
             });
         const dropLocation = [];
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                dropLocation.push(place);
+                dropLocation.push({ place_id: place.place_id });
             });
         const rideSearchRequest: RideSearchRequest = {
             rideScheduleType: this.rideSearchForm.get('rideScheduleType').value,
             rideDate: this.rideSearchForm.get('rideDate').value,
             rideTime: this.rideSearchForm.get('rideTime').value,
             carType: this.rideSearchForm.get('carType').value,
-            bid: this.rideSearchForm.get('bid').value
+            bid: this.rideSearchForm.get('bid').value,
+            pickupLocation,
+            dropLocation,
         };
-        console.log(pickupLocation);
         this.store.dispatch(customerActions.create(rideSearchRequest));
         const collection = this.firestore.collection('cabSearchRequests');
-        return collection.add(pickupLocation[0]);
+        return collection.add(rideSearchRequest);
     }
 
     onScroll($event) {
