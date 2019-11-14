@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-driver',
@@ -8,11 +9,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class DriverComponent implements OnInit {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private loadingController: LoadingController) { }
 
   ngOnInit() {
+    this.loadingController.create({
+      message: 'Finding Rides...',
+    }).then(loading => loading.present());
     this.firestore.collection('cabSearchRequests').valueChanges().subscribe(res => {
       console.log(res);
+      this.loadingController.dismiss();
     });
   }
 
