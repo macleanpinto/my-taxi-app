@@ -97,12 +97,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
         const pickupLocation = [];
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                pickupLocation.push({ place_id: place.place_id });
+                pickupLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
             });
         const dropLocation = [];
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                dropLocation.push({ place_id: place.place_id });
+                dropLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
             });
         const rideSearchRequest: RideSearchRequest = {
             rideScheduleType: this.rideSearchForm.get('rideScheduleType').value,
@@ -113,6 +113,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
             pickupLocation,
             dropLocation,
         };
+        console.log(rideSearchRequest);
         this.store.dispatch(customerActions.create(rideSearchRequest));
         const collection = this.firestore.collection('cabSearchRequests');
         return collection.add(rideSearchRequest);
