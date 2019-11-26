@@ -20,14 +20,13 @@
 			<fieldset>
 				<legend class="item-title">Pickup Location</legend>
 				<ion-item>
-					<ion-label>
-						<ion-text class='pull-right'>{{request[0].pickupLocation[0].place_id}}</ion-text>
-						<ion-text class='pull-right'>{{request[0].pickupLocation[0].place_id}}</ion-text>
+					<ion-label *ngFor='let location of request'>
+						<ion-text class='pull-right'>{{location.formatted_address}}</ion-text>
 					</ion-label>
 				</ion-item>
 			</fieldset>
 			<fieldset>
-				<legend class="item-title">Pickup Location</legend>
+				<legend class="item-title">Drop Location</legend>
 				<ion-item>
 					<ion-label>
 						<ion-text class='pull-right'>{{request[0].dropLocation[0].place_id}}</ion-text>

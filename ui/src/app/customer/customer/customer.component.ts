@@ -95,14 +95,15 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
     requestForCab() {
         const pickupLocation = [];
+        console.log(this.rideSearchRequest.pickupLocation);
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                pickupLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
+                pickupLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), formatted_address: place.formatted_address });
             });
         const dropLocation = [];
         this.rideSearchRequest.pickupLocation.forEach(
             (place: google.maps.GeocoderResult | google.maps.places.PlaceResult, index: number) => {
-                dropLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
+                dropLocation.push({ place_id: place.place_id, lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), formatted_address: place.formatted_address });
             });
         const rideSearchRequest: RideSearchRequest = {
             rideScheduleType: this.rideSearchForm.get('rideScheduleType').value,
