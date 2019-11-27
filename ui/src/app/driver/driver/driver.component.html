@@ -1,56 +1,57 @@
-<ion-card>
-
-	<ion-card-content>
-		<ion-item>
-			<ion-avatar slot="start">
-				<img src="https://www.gstatic.com/webp/gallery/2.sm.jpg">
+<ion-card class="ion-card">
+  <ion-card-content>
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="https://www.gstatic.com/webp/gallery/2.sm.jpg">
       </ion-avatar>
-
-				<ion-label>
-					<h1>Maclean Maurice Pinto</h1>
-					<ion-icon name="star"></ion-icon>
-					<ion-icon name="star"></ion-icon>
-					<ion-icon name="star"></ion-icon>
-					<ion-icon name="star"></ion-icon>
-					<ion-icon name="star"></ion-icon>
-				</ion-label>
-
-		</ion-item>
-		<ion-list>
-			<fieldset>
-				<legend class="item-title">Pickup Location</legend>
-				<ion-item>
-					<ion-label *ngFor='let location of request'>
-						<ion-text class='pull-right'>{{location.formatted_address}}</ion-text>
-					</ion-label>
-				</ion-item>
-			</fieldset>
-			<fieldset>
-				<legend class="item-title">Drop Location</legend>
-				<ion-item>
-					<ion-label>
-						<ion-text class='pull-right'>{{request[0].dropLocation[0].place_id}}</ion-text>
-					</ion-label>
-				</ion-item>
-			</fieldset>
-			<ion-item>
-				<ion-label>
-					<h1>Item Avatar</h1>
-					<p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
-				</ion-label>
-			</ion-item>
-			<ion-item>
-				<ion-label>
-					<h1>Item Avatar</h1>
-					<p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
-				</ion-label>
-			</ion-item>
-			<ion-item>
-				<ion-label>
-					<h1>Item Avatar</h1>
-					<p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
-				</ion-label>
-			</ion-item>
-		</ion-list>
-	</ion-card-content>
+      <ion-label>
+        <h1>Maclean Maurice Pinto</h1>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+      </ion-label>
+    </ion-item>
+    <fieldset>
+      <legend class="item-title">Pickup Location</legend>
+      <ion-list>
+      <ion-item *ngFor="let location of request[0].pickupLocation">
+        <ion-label>
+          <ion-text class='pull-left'>{{location.formatted_address}}</ion-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    </fieldset>
+    <fieldset>
+      <legend class="item-title">Drop Location</legend>
+      <ion-list>
+      <ion-item *ngFor="let location of request[0].dropLocation">
+        <ion-label>
+          <ion-text class='pull-left'>{{location.formatted_address}}</ion-text>
+        </ion-label>
+      </ion-item>
+      </ion-list>
+    </fieldset>
+    <ion-item>
+      <ion-label>
+        <h1>Item Avatar</h1>
+        <p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h1>Item Avatar</h1>
+        <p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h1>Item Avatar</h1>
+        <p>ttps://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y</p>
+      </ion-label>
+    </ion-item>
+    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+  </ion-card-content>
 </ion-card>

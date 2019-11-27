@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatPaginatorModule } from '@angular/material';
 import { IonicModule } from '@ionic/angular';
 
 @NgModule({
@@ -11,7 +11,8 @@ import { IonicModule } from '@ionic/angular';
     exports: [
         IonicModule,
         FormsModule, ReactiveFormsModule, HttpClientModule, IonicModule,
-        MatIconModule
+        MatIconModule,
+        MatPaginatorModule
     ],
     bootstrap: []
 })

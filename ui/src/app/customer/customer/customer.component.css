@@ -49,10 +49,7 @@ img {
   white-space: nowrap;
 }
 
-fieldset {
-  border: 0px;
-  text-align: left;
-}
+
 
 .loc-item {
   --padding-start: 6px;
